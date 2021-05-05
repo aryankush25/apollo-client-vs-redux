@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useQuery } from '@apollo/client'
+
+import './App.css'
+import { GET_USER, GET_REPOSITORIES } from './apollo/queries'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const { loading: loadingUser, error: errorUser, data: dataUser } = useQuery(GET_USER, {
+		variables: { login: 'aryankush25' }
+	})
+	const { loading: loadingRepositories, error: errorRepositories, data: dataRepositories } = useQuery(
+		GET_REPOSITORIES,
+		{
+			variables: { login: 'aryankush25' }
+		}
+	)
+
+	console.log('####', {
+		loadingRepositories,
+		errorRepositories,
+		dataRepositories
+	})
+
+	const bio = dataUser?.user?.bio
+	const company = dataUser?.user?.company
+	const followersCount = dataUser?.user?.followers?.totalCount
+	const followingCount = dataUser?.user?.following?.totalCount
+	const location = dataUser?.user?.location
+	const login = dataUser?.user?.login
+	const name = dataUser?.user?.name
+
+	return (
+		<div className='App'>
+			{loadingUser ? (
+				<div>Loading...</div>
+			) : errorUser ? (
+				<div>Error: {errorUser}</div>
+			) : (
+				<div>
+					<div>Name: {name}</div>
+					<div>Login: {login}</div>
+					<div>Bio: {bio}</div>
+					<div>Company: {company}</div>
+					<div>Location: {location}</div>
+					<div>Followers {followersCount}</div>
+					<div>Following {followingCount}</div>
+				</div>
+			)}
+		</div>
+	)
 }
 
-export default App;
+export default App
