@@ -4,24 +4,24 @@ const initialState = {
 	data: null
 }
 
-const user = (state = initialState, action) => {
+const repositories = (state = initialState, action) => {
 	switch (action.type) {
-		case 'FETCH_USER_INFO_REQUEST': {
+		case 'FETCH_REPOSITORIES_REQUEST': {
 			return {
 				...state,
 				loading: true
 			}
 		}
 
-		case 'FETCH_USER_INFO_SUCCESS': {
+		case 'FETCH_REPOSITORIES_SUCCESS': {
 			return {
 				...state,
 				loading: false,
-				data: action.payload.user
+				data: action.payload.repositories
 			}
 		}
 
-		case 'FETCH_USER_INFO_FAILURE': {
+		case 'FETCH_REPOSITORIES_FAILURE': {
 			return {
 				...state,
 				loading: false,
@@ -34,4 +34,4 @@ const user = (state = initialState, action) => {
 	}
 }
 
-export default user
+export default repositories
