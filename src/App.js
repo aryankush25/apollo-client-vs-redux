@@ -19,6 +19,11 @@ function App() {
 		errorRepositories,
 		dataRepositories
 	})
+	console.log('####', {
+		loadingUser,
+		errorUser,
+		dataUser
+	})
 
 	const bio = dataUser?.user?.bio
 	const company = dataUser?.user?.company
@@ -28,23 +33,80 @@ function App() {
 	const login = dataUser?.user?.login
 	const name = dataUser?.user?.name
 
+	const repositories = dataRepositories?.repositoryOwner?.repositories?.nodes
+	const repositoriesCount = dataRepositories?.repositoryOwner?.repositories?.totalCount
+
 	return (
 		<div className='App'>
-			{loadingUser ? (
-				<div>Loading...</div>
-			) : errorUser ? (
-				<div>Error: {errorUser}</div>
-			) : (
-				<div>
-					<div>Name: {name}</div>
-					<div>Login: {login}</div>
-					<div>Bio: {bio}</div>
-					<div>Company: {company}</div>
-					<div>Location: {location}</div>
-					<div>Followers {followersCount}</div>
-					<div>Following {followingCount}</div>
-				</div>
-			)}
+			<div>
+				{loadingUser ? (
+					<div className='loading'>Loading User...</div>
+				) : errorUser ? (
+					<div className='error'>Error in fetching Users: {errorUser.message}</div>
+				) : (
+					<div>
+						<div className='repos-label'>My info :-</div>
+
+						<div className='user-data-row'>
+							<div className='user-label'>Name:</div> {name}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Login:</div> {login}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Bio:</div> {bio}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Company:</div> {company}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Location:</div> {location}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Followers </div>
+							{followersCount}
+						</div>
+						<div className='user-data-row'>
+							<div className='user-label'>Following </div>
+							{followingCount}
+						</div>
+					</div>
+				)}
+			</div>
+
+			<div>
+				{loadingRepositories ? (
+					<div className='loading'>Loading Repositories...</div>
+				) : errorRepositories ? (
+					<div className='error'>Error in fetching Repositories: {errorRepositories.message}</div>
+				) : (
+					<div>
+						<div className='repos-label'>My latest 10 repos :-</div>
+						<div className='repos-total'>Total Repositories count: {repositoriesCount}</div>
+
+						<div>
+							{repositories.map((repo) => {
+								return (
+									<div key={repo.id} className='repo'>
+										<div className='user-data-row'>
+											<div className='user-label'>Repo name:</div> {repo.name}
+										</div>
+										<div className='user-data-row'>
+											<div className='user-label'>Repo description:</div> {repo.description}
+										</div>
+										<div className='user-data-row'>
+											<div className='user-label'>Repo id:</div> {repo.id}
+										</div>
+										<div className='user-data-row'>
+											<div className='user-label'>Repo owner name:</div> {repo.owner.login}
+										</div>
+									</div>
+								)
+							})}
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }

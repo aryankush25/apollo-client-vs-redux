@@ -1,8 +1,46 @@
 .App {
 	color: #61dafb;
 	background-color: #282c34;
-	height: 100vh;
+	min-height: 100vh;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
+	padding: 5%;
+	box-sizing: border-box;
+}
+
+.user-data-row {
+	color: white;
+	margin: 12px 0;
+}
+
+.user-label {
+	color: #61dafb;
+	font-size: x-small;
+	margin-bottom: 2px;
+}
+
+.error {
+	color: red;
+}
+
+.loading {
+	color: greenyellow;
+}
+
+.repos-label {
+	font-size: larger;
+	font-weight: bold;
+	margin-bottom: 12px;
+}
+
+.repos-total {
+	font-size: larger;
+	font-weight: bold;
+	margin-bottom: 12px;
+}
+
+.repo {
+	border: solid goldenrod 2px;
+	margin-top: 6px;
+	padding: 8px;
 }
