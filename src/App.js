@@ -1,40 +1,21 @@
-import { useQuery } from '@apollo/client'
-
+import { useGetUser } from './redux/hooks/user'
+import { useGetRepositories } from './redux/hooks/repositories'
 import './App.css'
-import { GET_USER, GET_REPOSITORIES } from './apollo/queries'
 
 function App() {
-	const { loading: loadingUser, error: errorUser, data: dataUser } = useQuery(GET_USER, {
-		variables: { login: 'aryankush25' }
-	})
-	const { loading: loadingRepositories, error: errorRepositories, data: dataRepositories } = useQuery(
-		GET_REPOSITORIES,
-		{
-			variables: { login: 'aryankush25' }
-		}
-	)
+	const { loading: loadingUser, error: errorUser, data: dataUser } = useGetUser()
+	const { loading: loadingRepositories, error: errorRepositories, data: dataRepositories } = useGetRepositories()
 
-	console.log('####', {
-		loadingRepositories,
-		errorRepositories,
-		dataRepositories
-	})
-	console.log('####', {
-		loadingUser,
-		errorUser,
-		dataUser
-	})
+	const bio = dataUser?.bio
+	const company = dataUser?.company
+	const followersCount = dataUser?.followers
+	const followingCount = dataUser?.following
+	const location = dataUser?.location
+	const login = dataUser?.login
+	const name = dataUser?.name
 
-	const bio = dataUser?.user?.bio
-	const company = dataUser?.user?.company
-	const followersCount = dataUser?.user?.followers?.totalCount
-	const followingCount = dataUser?.user?.following?.totalCount
-	const location = dataUser?.user?.location
-	const login = dataUser?.user?.login
-	const name = dataUser?.user?.name
-
-	const repositories = dataRepositories?.repositoryOwner?.repositories?.nodes
-	const repositoriesCount = dataRepositories?.repositoryOwner?.repositories?.totalCount
+	const repositories = dataRepositories
+	const repositoriesCount = dataRepositories?.length
 
 	return (
 		<div className='App'>
@@ -85,24 +66,25 @@ function App() {
 						<div className='repos-total'>Total Repositories count: {repositoriesCount}</div>
 
 						<div>
-							{repositories.map((repo) => {
-								return (
-									<div key={repo.id} className='repo'>
-										<div className='user-data-row'>
-											<div className='user-label'>Repo name:</div> {repo.name}
+							{repositories &&
+								repositories.map((repo) => {
+									return (
+										<div key={repo.id} className='repo'>
+											<div className='user-data-row'>
+												<div className='user-label'>Repo name:</div> {repo.name}
+											</div>
+											<div className='user-data-row'>
+												<div className='user-label'>Repo description:</div> {repo.description}
+											</div>
+											<div className='user-data-row'>
+												<div className='user-label'>Repo id:</div> {repo.id}
+											</div>
+											<div className='user-data-row'>
+												<div className='user-label'>Repo owner name:</div> {repo.owner.login}
+											</div>
 										</div>
-										<div className='user-data-row'>
-											<div className='user-label'>Repo description:</div> {repo.description}
-										</div>
-										<div className='user-data-row'>
-											<div className='user-label'>Repo id:</div> {repo.id}
-										</div>
-										<div className='user-data-row'>
-											<div className='user-label'>Repo owner name:</div> {repo.owner.login}
-										</div>
-									</div>
-								)
-							})}
+									)
+								})}
 						</div>
 					</div>
 				)}
